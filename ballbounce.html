@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ball Bounce Game</title>
+  <style>
+    body {
+      text-align: center;
+      margin-top: 50px;
+      font-family: Arial, sans-serif;
+      background-color: #F0F0F0;
+    }
+
+    h1 {
+      color: #FF0000;
+    }
+
+    #gameBoard {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      margin: 0 auto;
+      background-color: #FFFFFF;
+      border: 2px solid #000000;
+      overflow: hidden;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .ball {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #FFC107;
+      animation: bounce 1s infinite alternate;
+      cursor: pointer;
+    }
+
+    @keyframes bounce {
+      0% {
+        top: 0;
+      }
+      100% {
+        top: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Ball Bounce Game</h1>
+  <div id="gameBoard"></div>
+  <p id="score">Score: 0</p>
+  <p id="timer">Time: 60s</p>
+
+  <script>
+    var gameBoard = document.getElementById('gameBoard');
+    var scoreElement = document.getElementById('score');
+    var timerElement = document.getElementById('timer');
+    var score = 0;
+    var timer = 60;
+
+    gameBoard.addEventListener('click', function(event) {
+      if (event.target.classList.contains('ball')) {
+        event.target.remove();
+        score++;
+        scoreElement.textContent = 'Score: ' + score;
+      }
+    });
+
+    function createBall() {
+      var ball = document.createElement('div');
+      ball.classList.add('ball');
+      ball.style.left = Math.random() * (gameBoard.offsetWidth - ball.offsetWidth) + 'px';
+      ball.style.animationDuration = Math.random() * 2 + 1 + 's';
+
+      gameBoard.appendChild(ball);
+    }
+
+    function startGame() {
+      var countdown = setInterval(function() {
+        timer--;
+        timerElement.textContent = 'Time: ' + timer + 's';
+
+        if (timer === 0) {
+          clearInterval(countdown);
+          gameBoard.innerHTML = '<h2>Game Over!</h2><p>Your final score: ' + score + '</p>';
+        }
+      }, 1000);
+
+      setInterval(createBall, 1000);
+    }
+
+    startGame();
+  </script>
+</body>
+</html>
